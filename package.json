@@ -1,17 +1,25 @@
 {
-  "name": "services",
+  "name": "application",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@178.128.104.74:smartcampus/librarymanagementsystem/application.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ejs": "^2.6.1",
     "express": "^4.16.4",
-    "mongoose": "^5.4.21"
+    "hbs": "^4.0.3",
+    "mongoose": "^5.4.22",
+    "path": "^0.12.7"
   }
 }

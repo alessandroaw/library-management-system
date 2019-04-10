@@ -7,13 +7,13 @@ var BookSchema = new mongoose.Schema({
         unique: true,
         minlength: 1
     },
-    tittle:{
+    title:{
         type: String,
         required: true,
         trim: true,
         minlength: 1
     },
-    subtittle:{
+    subtitle:{
         type: String,
         required: true,
         trim: true,
@@ -81,6 +81,19 @@ var BookSchema = new mongoose.Schema({
 //
 //   })
 // };
+
+BookSchema.statics.findByIsbn = function (isbn){
+    var Book = this;
+
+	return Book.findOne({isbn}).then((Book) => {
+		if(!Book){
+			return Promise.reject();
+		}
+        return Promise.resolve(Book);
+    }).catch( (e) => {
+        return Promise.reject(e);
+    })
+};
 
 var Book = mongoose.model('books', BookSchema);
 

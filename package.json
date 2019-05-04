@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@178.128.104.74:smartcampus/librarymanagementsystem/application.git"
+    "url": "git@gitlab.com:smartcampusplatform/librarymanagementsystem/services.git"
   },
   "keywords": [],
   "author": "",

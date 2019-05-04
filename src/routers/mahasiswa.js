@@ -14,22 +14,34 @@ router.get('/mahasiswa/a',(req, res) => {
     res.send('from node js');
 })
 
-router.get('/mahasiswa/pinjam', (req, res) => {
-
+// Pinjam buku dengan input nim & isbn
+router.post('/mahasiswa/borrow', (req, res) => {
     Mahasiswa.findByNim(req.body.nim).then( (mahasiswa) => {
-        Book.findByIsbn(req.body.isbn).then((buku) => {
+        Book.findByIsbnAndInc(req.body.isbn, -1).then((buku) => {
 
             const pinjam = new Pinjam({
                 _idMahasiswa: mahasiswa._id,
                 _idBuku: buku._id
             })
-            console.log(pinjam);
-            pinjam.save()
+            pinjam.save().then(() => {
+              res.send(pinjam);
+            });
         })
     }).catch((e) => {
         res.status(400).send(e);
     })
 
+});
+
+router.patch('/mahasiswa/return', (req, res) => {
+  Mahasiswa.findByNim(req.body.nim).then((mahasiswa) => {
+    Pinjam.find(_idMahasiswa)
+      Book.findByIsbnAndInc(req.body.isbn, -1).then((buku) => {
+
+      })
+  }).catch((e) => {
+      res.status(400).send(e);
+  })
 });
 
 

@@ -1,43 +1,69 @@
 const express = require('express')
-const {Book} = require('../models/book')
+const Book = require('../models/book')
 const router = new express.Router();
 
-router.get('/books', async (req, res) => {
+// ==========================================
+// API
+// ==========================================
 
-    if(req.query.keyword){
-        var keyword = new RegExp(req.query.keyword,"i");
+//book/api/?keyword=1
+//book/api/?step=2
+// GET books by keyword
+router.get('/book/api/search', async (req, res) => {
+  // const step;
 
-        Book.find({title:keyword}, null, {sort:{title:1}}).then((books) => {
-            res.send(books);
-        }).catch((e) => {
-            res.status(400).send(e)
-        })
+  // // if(req.query.step){
+  // //   step = parseInt(req.query.step);
+  // // }
 
-    } else {
-        Book.find({}, null, {sort:{title:1}}).then((books) => {
-            res.send(books);
-        }).catch((e) => {
-            res.status(400).send(e)
-        })
-    }
+  // // // var limit = 3;
+  // // // var skip = 3*(step-1)
+
+  const keyword = new RegExp(req.query.keyword,'i');
+
+  try {
+    const book = await Book.find({
+        $or:[{title:keyword},{subtitle:keyword},{author:keyword}]
+      },
+      null,{
+        sort:{title:1},
+        // limit:limit,
+        // skip:skip
+      })
+
+    res.send(book);
+  } catch (e) {
+    res.status(400).send(e)
+  }
 
 });
 
-router.post('/book', async (req, res) => {
+// POST book to database
+router.post('/book/api', (req, res) => {
   const book = new Book(req.body);
 
   book.save().then(() => {
-    res.send(book);
+    res.status(201).send(book);
   }).catch((e) => {
     res.status(400).send(e);
+    console.log(e);
+
   })
 
 });
 
-router.get('/book/:id', (req, res) => {
-    Book.findById(req.params.id).then((book) => {
-        res.render('book.ejs', {title:book.title, book});
-    })
+
+// ==========================================
+// APPLICATION
+// ==========================================
+router.get('/book/:id', async (req, res, next) => {
+  try {
+    const book = await Book.findById(req.params.id)
+    res.render('book.ejs', {title:book.title, book});
+  } catch (e) {
+    e.status = 400;
+    next();
+  }
 });
 
 module.exports = router;

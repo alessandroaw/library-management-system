@@ -46,12 +46,6 @@ var BookSchema = new mongoose.Schema({
         trim: true,
         minlength: 1
     },
-    website:{
-        type: String,
-        default:'www.itb.ac.id',
-        trim: true,
-        minlength: 1
-    },
     pages:{
         type: Number,
         default: 100,
@@ -64,37 +58,34 @@ var BookSchema = new mongoose.Schema({
         minlength: 1
         }
     });
-// BookSchema.statics.findByKeyword = function (category, keyword){
-// 	var Book = this;
-//
-//   if (category == judul) {
-//
-//   } else {
-//
-//   }
-//
-// 	return Book.find({email}).then((Book) => {
-// 		if(!Book){
-// 			return Promise.reject();
-// 		}
-//     return Promise.resolve(Book);
-//
-//   })
-// };
 
-BookSchema.statics.findByIsbn = function (isbn){
-    var Book = this;
+BookSchema.statics.findByIsbn = async function (isbn){
+    
+    const book = await Book.findOne({isbn});
 
-	return Book.findOne({isbn}).then((Book) => {
-		if(!Book){
-			return Promise.reject();
-		}
-        return Promise.resolve(Book);
-    }).catch( (e) => {
-        return Promise.reject(e);
-    })
+    if(!book){
+        throw new Error('Book not found');
+    }
+
+    return book;
 };
+
+BookSchema.statics.findByIsbnAndInc = function(isbn, inc) {
+  var Book = this;
+
+  return Book.findOneAndUpdate(
+    {isbn},
+    {$inc:{stock:inc}}
+    ).then((Book) => {
+    if(!Book){
+      return Promise.reject();
+    }
+    return Promise.resolve(Book);
+  }).catch( (e) => {
+      return Promise.reject(e);
+  })
+}
 
 var Book = mongoose.model('books', BookSchema);
 
-module.exports = {Book};
+module.exports = Book;

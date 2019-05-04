@@ -4,7 +4,6 @@ const ejs = require('ejs');
 require('./db/mongoose');
 
 const app = express();
-const port  = process.env.port || 3020;
 
 // Setup path
 const publicPathDirectory = path.join(__dirname, '../../application/public');
@@ -32,7 +31,4 @@ app.get('/', (req,res) => {
 app.use(bookRouter);
 app.use(mahasiswaRouter);
 
-
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}` );
-})
+module.exports = app;

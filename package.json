@@ -8,8 +8,8 @@
     "dev": "env-cmd ./config/dev.env nodemon src/index.js",
     "test": "env-cmd ./config/test.env jest --watch"
   },
-  "jest":{
-    "testEnvironment":"node"
+  "jest": {
+    "testEnvironment": "node"
   },
   "repository": {
     "type": "git",
@@ -23,7 +23,8 @@
     "express": "^4.16.4",
     "hbs": "^4.0.3",
     "mongoose": "^5.4.22",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "validator": "^10.11.0"
   },
   "devDependencies": {
     "env-cmd": "^8.0.2",

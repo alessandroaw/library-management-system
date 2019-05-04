@@ -3,15 +3,18 @@ const app = require('../src/app');
 const Book = require('../src/models/book')
 
 const bookOne = {
-  "isbn" : "9781491950296",
-  "title" : "Programming JavaScript Applications",
-  "subtitle" : "Robust Web Architecture with Node, HTML5, and Modern JS Libraries",
-  "author" : "Eric Elliott",
-  "publisher" : "O'Reilly Media",
-  "pages" : 254,
-  "description" : "Take advantage of JavaScript's power to build robust web-scale or enterprise applications that are easy to extend and maintain. By applying the design patterns outlined in this practical book, experienced JavaScript developers will learn how to write flexible and resilient code that's easier-yes, easier-to work with as your code base grows.",
-  "location" : "32A",
-  "stock" : 4
+  isbn: "9781491904244",
+  title: "You Don't Know JS",
+  category:"Buku",
+  author: "Kyle Simpson",
+  published: new Date("2015-12-27T00:00:00.000Z"),
+  publisher: "O'Reilly Media",
+  description: "No matter how much experience you have with JavaScript, odds are you don’t fully understand the language. As part of the \"You Don’t Know JS\" series, this compact guide focuses on new features available in ECMAScript 6 (ES6), the latest version of the standard upon which JavaScript is built.",
+  goodCondtion:4,    
+  badCondtion:0,    
+  stock:4,    
+  total:4,    
+  location:"3-12A"  
 }
 
 beforeEach(async () => {
@@ -21,19 +24,22 @@ beforeEach(async () => {
 
 test('Should post a book', async () => {
   await request(app).post('/book/api').send({
-    "isbn" : "9781593275846",
-    "title" : "Eloquent JavaScript, Second Edition",
-    "subtitle" : "A Modern Introduction to Programming",
-    "author" : "Marijn Haverbeke",
-    "publisher" : "O'Reilly Media",
-    "pages" : 472,
-    "description" : "JavaScript lies at the heart of almost every modern web application, from social apps to the newest browser-based games. Though simple for beginners to pick up and play with, JavaScript is a flexible, complex language that you can use to build full-scale applications.",
-    "location" : "33A",
-    "stock" : 4
+    isbn: "9781449337711",
+    title: "Designing Evolvable Web APIs with ASP.NET",
+    category:"Buku",
+    author: "Glenn Block, et al.",
+    published: new Date("2014-04-07T00:00:00.000Z"),
+    publisher: "O'Reilly Media",
+    description: "Design and build Web APIs for a broad range of clients—including browsers and mobile devices—that can adapt to change over time. This practical, hands-on guide takes you through the theory and tools you need to build evolvable HTTP services with Microsoft’s ASP.NET Web API framework. In the process, you’ll learn how design and implement a real-world Web API.",
+    goodCondtion:4,    
+    badCondtion:0,    
+    stock:4,    
+    total:4,    
+    location:"3-12A"    
   }).expect(201)
 })
 
 test('Should return book with a certain keyword', async () => {
-  const keyword = 'javascript'
+  const keyword = 'js'
   await request(app).get(`/book/api/search?${keyword}`).expect(200)
 })

@@ -5,35 +5,39 @@ var nextWeek = () => {
     return new Date(today.getTime() + 7*24*60*60*1000);
 }
 
-var PinjamSchema = new mongoose.Schema({
+var BorrowSchema = new mongoose.Schema({
   _idMahasiswa:{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'mahasiswa',
+    ref: 'mahasiswas',
     required: true
 	},
   _idBuku:{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'buku',
+    ref: 'books',
     required: true
 	},
-  tanggalPinjam: {
+  date: {
     type: Date,
     default: new Date()
   },
-  deadlinePengembalian: {
+  dueDate: {
       type: Date,
       default: nextWeek()
   },
-  tanggalPengembalian: {
+  returnDate: {
     type: Date,
     default: null
   },
-  isDikembalikan: {
+  isReturned: {
     type: Boolean,
     default: false
+  },
+  fine: {
+    type: Number,
+    default: 0
   }
 });
 
-var Pinjam = mongoose.model('pinjams', PinjamSchema);
+var Borrow = mongoose.model('borrows', BorrowSchema);
 
-module.exports = {Pinjam};
+module.exports = Borrow;

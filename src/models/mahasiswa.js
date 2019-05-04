@@ -1,5 +1,15 @@
 const mongoose = require('mongoose');
+const validator = require('validator');
+
+
 var MahasiswaSchema = new mongoose.Schema({
+    rfid:{
+        type: String,
+        required: true,
+        trim: true,
+        unique: true,
+        minlength: 1
+    },
     nim:{
         type: String,
         required: true,
@@ -13,28 +23,33 @@ var MahasiswaSchema = new mongoose.Schema({
         trim: true,
         minlength: 1
     },
-    prodi:{
-        type: String,
-        default: 'Sistem dan Teknologi Informasi',
-        required: true,
-        trim: true,
-        minlength: 1
+    email:{
+		type: String,
+		required: true,
+		minlength: 1,
+		trim: true,
+		unique: true,
+		validate:{
+			validator:validator.isEmail,
+			message:"{VALUE} is not a valid email"
+		}
     }
 });
 
-MahasiswaSchema.statics.findByNim = function (nim){
-    var Mahasiswa = this;
+MahasiswaSchema.statics.findByRFID = async function (rfid){
+    const Mahasiswa = this;
+    
+    try {
+        var mahasiswa = await Mahasiswa.findOne({rfid});
+        if(!mahasiswa) throw new Error('Mahasiswa not found');
+        return mahasiswa;        
 
-	return Mahasiswa.findOne({nim}).then((Mahasiswa) => {
-		if(!Mahasiswa){
-			return Promise.reject();
-		}
-        return Promise.resolve(Mahasiswa);
-    }).catch( (e) => {
-        return Promise.reject(e);
-    })
+    } catch (error) {
+
+    }
+
 };
 
-var Mahasiswa = mongoose.model('mahasiswas', MahasiswaSchema);
+const Mahasiswa = mongoose.model('mahasiswas', MahasiswaSchema);
 
 module.exports = {Mahasiswa};

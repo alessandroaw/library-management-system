@@ -1,11 +1,11 @@
 const express = require('express')
 const Book = require('../models/book')
+const goodreads = require('../utils/goodreads-search');
 const router = new express.Router();
 
 // ==========================================
 // API
 // ==========================================
-
 //book/api/?keyword=1
 //book/api/?step=2
 // GET books by keyword
@@ -19,7 +19,7 @@ router.get('/book/api/search', async (req, res) => {
   // // // var limit = 3;
   // // // var skip = 3*(step-1)
 
-  const keyword = new RegExp(req.query.keyword,'i');
+  const keyword = new RegExp(req.query.q,'i');
 
   try {
     const book = await Book.find({

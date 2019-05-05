@@ -13,6 +13,8 @@ const partialsPath = path.join(__dirname, '../../application/templates/partials'
 // router
 const bookRouter = require('./routers/book');
 const mahasiswaRouter = require('./routers/mahasiswa')
+const recommendationRouter = require('./routers/recommendation')
+const adminRouter = require('./routers/admin')
 
 // setup public directory
 app.use(express.json());
@@ -23,12 +25,14 @@ app.set('view engine', 'ejs');
 app.use(express.static(publicPathDirectory));
 
 app.get('/', (req,res) => {
-  res.render('home.ejs', {
+  res.render('index-cari.ejs', {
     title:'Home'
   });
 });
 
 app.use(bookRouter);
 app.use(mahasiswaRouter);
+app.use(recommendationRouter);
+app.use(adminRouter);
 
 module.exports = app;

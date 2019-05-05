@@ -10,8 +10,8 @@ const router = new express.Router();
 
 // })
 
-router.get('/mahasiswa/a',(req, res) => {
-    res.send('from node js');
+router.get('/mahasiswa/recommendation',(req, res) => {
+    res.render('mahasiswa-rekomendasi.ejs');
 })
 
 // Pinjam buku dengan input nim & isbn

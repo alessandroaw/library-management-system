@@ -25,7 +25,8 @@ var BookSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
-        minlength: 1
+        minlength: 1,
+        default:'Book'
     },
     author:{
         type: String,
@@ -48,7 +49,7 @@ var BookSchema = new mongoose.Schema({
         trim: true,
         minlength: 1
     },
-    goodCondtion:{
+    goodCondition:{
         type: Number,
         default: 4
     },

@@ -40,7 +40,7 @@ const getBookSuggestion = async (keyword) => {
     return {
       title: w.best_book.title._text,
       author: w.best_book.author.name._text,
-      image: w.best_book.image_url._text
+      image: w.best_book.small_image_url._text
       }
   })
 

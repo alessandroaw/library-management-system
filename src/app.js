@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const ejs = require('ejs');
+const bodyParser = require("body-parser");
 require('./db/mongoose');
 
 const app = express();
@@ -15,9 +16,12 @@ const bookRouter = require('./routers/book');
 const mahasiswaRouter = require('./routers/mahasiswa')
 const recommendationRouter = require('./routers/recommendation')
 const adminRouter = require('./routers/admin')
+const borrowRouter = require('./routers/borrow')
 
-// setup public directory
+// setup response parser 
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 // Setup handlebars engine and views location
 app.set('views', viewsPath);
@@ -34,5 +38,6 @@ app.use(bookRouter);
 app.use(mahasiswaRouter);
 app.use(recommendationRouter);
 app.use(adminRouter);
+app.use(borrowRouter);
 
 module.exports = app;

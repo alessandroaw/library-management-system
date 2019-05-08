@@ -26,7 +26,7 @@ var BookSchema = new mongoose.Schema({
         required: true,
         trim: true,
         minlength: 1,
-        default:'Book'
+        default:'Buku'
     },
     author:{
         type: String,
@@ -37,6 +37,12 @@ var BookSchema = new mongoose.Schema({
     // =============================
     // DEFAULT SET
     // =============================
+    image:{
+        type: String,
+        default: 'https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png',
+        trim: true,
+        minlength: 1
+    },
     publisher:{
         type: String,
         default: 'Penerbit ITB',
@@ -72,11 +78,9 @@ var BookSchema = new mongoose.Schema({
         minlength: 1
         }
     });
-
 BookSchema.statics.findByIsbn = async function (isbn){
-    
     const book = await Book.findOne({isbn});
-
+    
     if(!book){
         throw new Error('Book not found');
     }

@@ -11,7 +11,7 @@ var RecommendationSchema = new mongoose.Schema({
   category:{
     type: String,
     trim: true,
-    default:'Book',
+    default:'Buku',
     minlength: 1
   },
   author:{
@@ -19,6 +19,10 @@ var RecommendationSchema = new mongoose.Schema({
     required: true,
     trim: true,
     minlength: 1
+  },
+  published_year:{
+    type: Number,
+    default: new Date().getFullYear(),
   },
   count:{
     type:Number,

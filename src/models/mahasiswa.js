@@ -44,12 +44,12 @@ MahasiswaSchema.statics.findByRFID = async function (rfid){
         if(!mahasiswa) throw new Error('Mahasiswa not found');
         return mahasiswa;        
 
-    } catch (error) {
-
+    } catch (e) {
+        throw e
     }
 
 };
 
 const Mahasiswa = mongoose.model('mahasiswas', MahasiswaSchema);
 
-module.exports = {Mahasiswa};
+module.exports = Mahasiswa;

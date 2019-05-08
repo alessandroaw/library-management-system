@@ -38,6 +38,14 @@ var BorrowSchema = new mongoose.Schema({
   }
 });
 
+// BorrowSchema.pre('update', function (next) {
+//   const borrow = this;
+//   console.log(borrow._id);
+//   console.log(borrow.isReturned);
+  
+//   next();
+// });
+
 var Borrow = mongoose.model('borrows', BorrowSchema);
 
 module.exports = Borrow;

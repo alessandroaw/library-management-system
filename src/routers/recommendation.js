@@ -19,7 +19,11 @@ router.post('/recommendation/api', async (req, res) => {
   try {
     var response =  await Recommendation.findOneAndUpdate(
       req.body,
-      {$inc: {'count':1}});
+      {
+        $inc: {
+          'count':1
+        }
+      });
     
     if(!response){
       response = new Recommendation(req.body)

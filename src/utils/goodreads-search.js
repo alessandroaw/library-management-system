@@ -34,13 +34,13 @@ const getBookSuggestion = async (keyword) => {
     .search
     .results
     .work;
-
   // const books = work.map((w) => w.best_book)
   const books = work.map((w) => {
     return {
       title: w.best_book.title._text,
       author: w.best_book.author.name._text,
-      image: w.best_book.small_image_url._text
+      image: w.best_book.small_image_url._text,
+      published_year: parseInt(w.original_publication_year._text)
       }
   })
 

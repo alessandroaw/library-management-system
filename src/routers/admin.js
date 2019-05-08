@@ -25,6 +25,10 @@ router.get('/admin/stock-opname/report', async (req, res) => {
   res.render('admin-stock-opname-report.ejs', {data});
 })
 
+router.get('/admin/stock-opname', (req, res) => {
+
+})
+
 router.get('/admin/sirkulasi', async(req, res) => {
   const results = await Borrow.find({})
     .populate('_idMahasiswa')
@@ -53,5 +57,6 @@ router.get('/admin/recommendation', async (req, res) => {
   const data = await Recommendation.find({}, null, {sort:{count:-1}})
   res.render('admin-rekomendasi.ejs',{data});
 })
+
 
 module.exports = router;

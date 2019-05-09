@@ -2,10 +2,10 @@
   "name": "application",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "env-cmd ./config/dev.env nodemon src/index.js",
+    "start": "node src/app.js",
+    "dev": "env-cmd ./config/dev.env nodemon src/app.js",
     "coba": "env-cmd ./config/dev.env nodemon playground/tes.js",
     "test": "env-cmd ./config/test.env jest --watch"
   },
@@ -20,6 +20,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@serialport/parser-readline": "^2.0.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "connect-mongo": "^2.0.3",
@@ -27,11 +28,14 @@
     "express": "^4.16.4",
     "express-session": "^1.16.1",
     "hbs": "^4.0.3",
+    "http": "0.0.0",
     "mongoose": "^5.4.22",
     "open": "^6.2.0",
     "path": "^0.12.7",
     "query-string": "^6.5.0",
     "request-promise-native": "^1.0.7",
+    "serialport": "^7.1.5",
+    "socket.io": "^2.2.0",
     "validator": "^10.11.0",
     "xml-js": "^1.6.11"
   },

@@ -1,7 +1,8 @@
 const app = require('./app');
+const http = require('http').Server(app);
 
 const port  = process.env.PORT || 80;
 
-app.listen(port, () => {
+http.listen(port, () => {
     console.log(`Server is running on port ${port}` );
 })

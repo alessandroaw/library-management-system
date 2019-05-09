@@ -6,9 +6,15 @@ const MongoStore = require('connect-mongo')(session);
 const bodyParser = require("body-parser");
 const mongoose = require('./db/mongoose');
 
-const db = mongoose.connection;
-
 const app = express();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+
+
+const db = mongoose.connection;
+const port  = process.env.PORT || 80;
+
+
 app.use(session({
   secret: 'work hard',
   resave: true,
@@ -52,4 +58,29 @@ app.use(recommendationRouter);
 app.use(adminRouter);
 app.use(borrowRouter);
 
-module.exports = app;
+
+const SerialPort = require('serialport');
+const Readline = require('@serialport/parser-readline');
+const sport = new SerialPort('/dev/ttyACM0', { baudRate: 9600 });
+const parser = sport.pipe(new Readline({ delimiter: '\n' }));
+
+
+io.on('connection', (socket) => {
+  console.log('Connection has been established with browser.');
+  socket.on('disconnect', () => {
+    console.log('Browser client disconnected from the connection.');
+  });
+});
+
+sport.on("open", () => {
+  console.log('serial port open');
+});
+
+parser.on('data', data =>{
+  // console.log('got word from arduino:', data);
+  io.emit('rfid-tag', data)
+});
+
+http.listen(port, () => {
+  console.log(`Server is running on port ${port}` );
+})

@@ -13,7 +13,7 @@ var calculateFine = (result) => {
 
 router.post('/borrow/api', async (req, res) => {
   const body = req.body;
-  const mahasiswaId = body.mahasiswaId;
+  const mahasiswaId = req.session.mahasiswaId;
   const book = await Book.findOneAndUpdate(
     {
       isbn:body.bookIsbn
@@ -38,7 +38,7 @@ router.post('/borrow/api/br', async (req, res) => {
   // move variable
   console.log('masuk borrow post api')
   var check = req.body.checkedBooks;
-  const mahasiswaId = sessionMahasiswaId;
+  const mahasiswaId = req.session.mahasiswaId;
   console.log(check);
 
   try {
@@ -97,7 +97,7 @@ router.post('/borrow/api/br', async (req, res) => {
 router.post('/borrow/api/rt', async (req, res) => {
   console.log('masuk return post api')
   var check = req.body.checkedBooks;
-  const mahasiswaId = sessionMahasiswaId;
+  const mahasiswaId = req.session.mahasiswaId;
   console.log(check);
 
   try {

@@ -1,10 +1,22 @@
 const express = require('express');
 const path = require('path');
 const ejs = require('ejs');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 const bodyParser = require("body-parser");
-require('./db/mongoose');
+const mongoose = require('./db/mongoose');
+
+const db = mongoose.connection;
 
 const app = express();
+app.use(session({
+  secret: 'work hard',
+  resave: true,
+  saveUninitialized: false,
+  store: new MongoStore({
+    mongooseConnection: db
+  })
+}));
 
 // Setup path
 const publicPathDirectory = path.join(__dirname, '../../application/public');

@@ -90,7 +90,7 @@ router.post('/borrow/api/br', async (req, res) => {
     res.status(400).send(e);
   }
 
-  res.redirect('/mahasiswa/borrow')
+  res.redirect('/mahasiswa/')
 })
 
 
@@ -173,7 +173,7 @@ router.post('/borrow/api/rt', async (req, res) => {
     res.status(400).send(e);
   }
 
-  res.redirect('/mahasiswa/return')
+  res.redirect('/mahasiswa/')
 })
 
 // Pinjam buku dengan input nim & isbn

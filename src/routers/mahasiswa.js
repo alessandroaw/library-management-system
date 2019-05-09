@@ -19,6 +19,10 @@ router.post('/mahasiswa/dev/api', async (req, res) => {
     }
 })
 
+router.get('/mahasiswa/', (req,res) => {
+    res.render('mahasiswa-menu.ejs');    
+})
+
 router.get('/mahasiswa/borrow', async (req, res) => {
     res.render('mahasiswa-borrow.ejs');
 })

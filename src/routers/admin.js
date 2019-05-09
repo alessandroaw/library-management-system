@@ -25,8 +25,12 @@ router.get('/admin/stock-opname/report', async (req, res) => {
   res.render('admin-stock-opname-report.ejs', {data});
 })
 
-router.get('/admin/stock-opname', (req, res) => {
+router.get('/admin/login', (req, res) => {
+  res.render('admin-login.ejs')
+})
 
+router.get('/admin/stock-opname', (req, res) => {
+  res.render('admin-stock-opname.ejs')
 })
 
 router.get('/admin/sirkulasi', async(req, res) => {

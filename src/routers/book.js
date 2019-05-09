@@ -53,8 +53,6 @@ router.post('/book/api', (req, res) => {
 // 9781449331818
 // 987654321098
 router.get('/book/api/:isbn', async (req, res, next) => {
-  console.log(req.params.isbn);
-  console.log('masuk book isbn');
   
   try {
     const book = await Book.findByIsbn(req.params.isbn)
@@ -66,6 +64,48 @@ router.get('/book/api/:isbn', async (req, res, next) => {
     res.status(400).send(e);
   }
 });
+
+router.post('/book/api/opname', async (req, res) => {
+  var updates = [];
+  var ids = req.body.checkedBooks;
+  
+  if(Array.isArray(ids) && ids.length){
+    var temp = req.body.stock;
+    for (let i = 0; i < temp.length; i++) {
+      updates.push({
+        stock: temp[i],
+        goodCondition:req.body.goodCondition[i],
+        badCondition:req.body.badCondition[i]
+      })
+      
+    }
+  } else{
+    ids = [ids];
+    updates.push({
+      stock:req.body.stock,
+      goodCondition:req.body.goodCondition,
+      badCondition:req.body.badCondition
+    })
+  }
+  console.log(ids);
+
+  for (let i = 0; i < ids.length; i++) {
+    var result = await Book.update({
+        _id:ids[i]
+      },{
+        $set:{
+          stock:updates[i].stock,
+          goodCondition:updates[i].goodCondition,
+          badCondition:updates[i].badCondition,
+        }
+      })
+    console.log(result);
+        
+  }
+
+  res.redirect('/admin/stock-opname/report')
+  // res.status(200).send({ids,updates});
+})
 
 // ==========================================
 // APPLICATION

@@ -32,7 +32,7 @@ router.post('/mahasiswa/login', async (req, res) => {
             res.redirect('/mahasiswa');
         
         } catch (e) {
-            res.status(400).send(e);
+            res.redirect('/mahasiswa/login')
         }
     }
 })

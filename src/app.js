@@ -58,7 +58,7 @@ app.use(recommendationRouter);
 app.use(adminRouter);
 app.use(borrowRouter);
 
-
+// ARDUINO
 const SerialPort = require('serialport');
 const Readline = require('@serialport/parser-readline');
 const sport = new SerialPort('/dev/ttyACM0', { baudRate: 9600 });

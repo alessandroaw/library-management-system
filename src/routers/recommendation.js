@@ -36,4 +36,20 @@ router.post('/recommendation/api', async (req, res) => {
 
 });
 
+router.get('/recommendation/api/ref', (req, res) => {
+  var books = [
+    {
+      title:'Modern Operating Systems, 3rd Edition',
+      author:'Andrew S. Tanenbaum',
+      published_year:2008
+    },{
+      title:'Business Analyst Body of Knowledge',
+      author:'IIBA',
+      published_year:2015,
+    }
+  ]
+
+  res.send(books)
+})
+
 module.exports = router;

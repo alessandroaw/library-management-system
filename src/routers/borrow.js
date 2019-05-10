@@ -3,7 +3,8 @@ const Mahasiswa = require('../models/mahasiswa');
 const Book = require('../models/book');
 const Borrow = require('../models/borrow');
 const router = new express.Router();
-const sessionMahasiswaId = '5ccea7f905298b60f740aa6e';
+const {sendBorrowReceipt, sendReturnReceipt} = require('../utils/account');
+const {authenticate} = require('../middleware/mahasiswa-auth');
 
 var calculateFine = (result) => {
   const dateDiff = new Date(result.dueDate).getDate() - new Date().getDate();
@@ -34,7 +35,7 @@ router.post('/borrow/api', async (req, res) => {
 
 })
 
-router.post('/borrow/api/br', async (req, res) => {
+router.post('/borrow/api/br', authenticate, async (req, res) => {
   // move variable
   console.log('masuk borrow post api')
   var check = req.body.checkedBooks;
@@ -43,123 +44,91 @@ router.post('/borrow/api/br', async (req, res) => {
 
   try {
     // if array do multiple update and insert
-    if(Array.isArray(check) && check.length) {
-      // update book stock
-      var temp = await Book.update(
-        {
-          _id:{$in: check}
-        },{
-          $inc:{
-            'stock':-1  
-          }
-        },{
-          multi: true
-        });
-      console.log('temp');
-      console.log(temp);
-      
-      // Insert Borrow Document
-      const borrows = check.map( (check) => {
-        return new Borrow({
-          _idBuku:check,
-          _idMahasiswa: mahasiswaId
-        });
+    if(!(Array.isArray(check) && check.length)) {
+      check = [check]
+    }
+
+    // update book stock
+    var temp = await Book.update(
+      {
+        _id:{$in: check}
+      },{
+        $inc:{
+          'stock':-1  
+        }
+      },{
+        multi: true
+      });
+    
+    var books = await Book.find(
+      {
+        _id:{$in: check}
       })
-      var result = await Borrow.insertMany(borrows);
-      console.log(result);
-      
-    } else{
-      // update book stock
-      var temp = await Book.update(
-        {
-          _id:check
-        },{
-          $inc:{
-            'stock':-1  
-          }
-        });
-        // insert Borrow document
-      const borrow = new Borrow({
+
+    sendBorrowReceipt(req.mahasiswa.nama, req.mahasiswa.email, books);
+
+    // Insert Borrow Document
+    const borrows = check.map( (check) => {
+      return new Borrow({
         _idBuku:check,
         _idMahasiswa: mahasiswaId
-      })
-      var result = await borrow.save();
-      console.log(result)
-    }  
+      });
+    })
+    var result = await Borrow.insertMany(borrows);
+    console.log(result);
+    
+    
   } catch (e) {
+    console.log(e);
+    
     res.status(400).send(e);
   }
 
-  res.redirect('/mahasiswa/')
+  res.redirect('/mahasiswa/');
 })
 
 
-router.post('/borrow/api/rt', async (req, res) => {
+router.post('/borrow/api/rt', authenticate, async (req, res) => {
   console.log('masuk return post api')
   var check = req.body.checkedBooks;
   const mahasiswaId = req.session.mahasiswaId;
   console.log(check);
 
   try {
-    if(Array.isArray(check) && check.length) {
-      var temp = await Book.update(
-        {
-          _id:{$in: check}
-        },{
-          $inc:{
-            'stock':1  
-          }
-        },{
-          multi: true
-        });
+    if(!(Array.isArray(check))) {
+      check = [check]
+    }
+    var temp = await Book.update(
+      {
+        _id:{$in: check}
+      },{
+        $inc:{
+          'stock':1  
+        }
+      },{
+        multi: true
+      });
       console.log(temp);
-      
-      // Find borrow with key ==> (mahasiswaID, check[i])
-      Borrow.find({
+      console.log('ye');
+    
+    // Find borrow with key ==> (mahasiswaID, check[i])
+    
+    const docs = await Borrow.find({
         $and:[
           {_idMahasiswa:mahasiswaId},
           {_idBuku:{$in:check}},
           {isReturned: false}
         ]
-      }).then((docs) => {
-        docs.forEach(async(doc) => {
-          const fine = calculateFine(doc);
-          const result = await Borrow.update({
-            doc
-          },{
-            $set:{
-              isReturned: true,
-              returnDate: new Date(),
-              fine: fine
-            }
-          })
-          console.log(result);
-          
-        });
-      })
+      }).populate('_idBuku')
 
-    } else{
-      var temp = await Book.update(
-        {
-          _id:check
-        },{
-          $inc:{
-            'stock':1  
-          }
-        });
-
-      const temmp = await Borrow.find({
-          $and:[
-            {_idMahasiswa:mahasiswaId},
-            {_idBuku:check},
-            {isReturned:false}
-          ]
-        });
+      console.log(docs);
+      var books = [];
       
-        const fine = calculateFine(temp);
-      
+      docs.forEach(async(doc) => {
+        books.push(doc._idBuku);
+        const fine = calculateFine(doc);
         const result = await Borrow.update({
-          _id:result._id
+          _id:doc._id
         },{
           $set:{
             isReturned: true,
@@ -167,9 +136,14 @@ router.post('/borrow/api/rt', async (req, res) => {
             fine: fine
           }
         })
-      console.log(result)
-    }  
+        console.log(result);
+        
+      });
+      sendReturnReceipt(req.mahasiswa.nama, req.mahasiswa.email, books)
+
   } catch (e) {
+    console.log(e);
+    
     res.status(400).send(e);
   }
 

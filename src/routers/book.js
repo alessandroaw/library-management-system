@@ -22,7 +22,7 @@ router.get('/book/api/search', async (req, res) => {
   const keyword = new RegExp(req.query.q,'i');
   try {
     const book = await Book.find({
-        $or:[{title:keyword},{subtitle:keyword},{author:keyword}]
+        $or:[{title:keyword},{author:keyword}, {category:keyword}]
       },
       null,{
         sort:{title:1},

@@ -12,7 +12,7 @@ const io = require('socket.io')(http);
 
 
 const db = mongoose.connection;
-const port  = process.env.PORT || 80;
+const port  = process.env.PORT;
 
 
 app.use(session({
@@ -25,9 +25,9 @@ app.use(session({
 }));
 
 // Setup path
-const publicPathDirectory = path.join(__dirname, '../../application/public');
-const viewsPath = path.join(__dirname, '../../application/templates/views')
-const partialsPath = path.join(__dirname, '../../application/templates/partials')
+const publicPathDirectory = path.join(__dirname, '../public');
+const viewsPath = path.join(__dirname, '../templates/views')
+const partialsPath = path.join(__dirname, '../templates/partials')
 
 // router
 const bookRouter = require('./routers/book');

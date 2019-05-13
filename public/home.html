@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{{title}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Bibliotech</h1>
+        <a href="/">Buku</a>
+        <a href="/about">About</a>
+        <a href="/help">Help</a>
+    </header>
+    <div class="main-content">
+        <form>
+            <h2>Cari Buku</h2>
+            <input type="text" placeholder="judul buku">
+            <button>search</button>
+        </form>
+        <div id="search-result">
+          <script id="template" type="html">
+          <br>
+          <table border=1>
+            <tr>
+              <td><b>Title</b></td>
+              <td><b>Author</b></td>
+              <td><b>Stock</b></td>
+            </tr>
+            {{#books}}
+            {{#.}}
+            <tr>
+              <td><a href="/book/{{_id}}">{{title}}</a></td>
+              <td>{{author}}</td>
+              <td>{{stock}}</td>
+            </tr>
+            {{/.}}
+            {{/books}}
+          </table>
+          </script>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
+    <script src="/js/search.js"></script>
+</body>
+</html>

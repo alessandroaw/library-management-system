@@ -1,0 +1,261 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Administrasi Perpustakaan</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/assets/images/icon/favicon.ico">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/css/themify-icons.css">
+    <link rel="stylesheet" href="/assets/css/metisMenu.css">
+    <link rel="stylesheet" href="/assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/assets/css/slicknav.min.css">
+    <!-- amchart css -->
+    <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+    <!-- others css -->
+    <link rel="stylesheet" href="/assets/css/typography.css">
+    <link rel="stylesheet" href="/assets/css/default-css.css">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/responsive.css">
+    <link href="/css/barcode.css" rel="stylesheet">
+    
+    <!-- modernizr css -->
+    <script src="/assets/js/vendor/modernizr-2.8.3.min.js"></script>
+</head>
+
+<body class="body-bg">
+    <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+    <!-- preloader area start -->
+    <div id="preloader">
+        <div class="loader"></div>
+    </div>
+    <!-- preloader area end -->
+    <!-- main wrapper start -->
+    <div class="horizontal-main-wrapper">
+        <!-- main header area start -->
+        <%- include('../partials/header-admin') %>
+
+        <!-- main header area end -->
+        <!-- header area start -->
+        <div class="header-area header-bottom">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-12  d-none d-lg-block">                               
+						<div class="card text-center">
+						  <div class="card-header">
+							<ul class="nav nav-tabs card-header-tabs">
+							  <li class="nav-item col-sm-3">
+								<a class="nav-link" href="/admin/sirkulas">Sirkulasi Buku</a>
+							  </li>
+							  <li class="nav-item col-sm-3">
+								<a class="nav-link" href="/admin/recommendation">Rekomendasi Buku</a>
+							  </li>
+							  <li class="nav-item col-sm-3">
+								<a class="nav-link active" href="/admin/stock-opname">Input Stock Opname</a>
+							  </li>
+							  <li class="nav-item col-sm-3">
+								<a class="nav-link" href="/admin/stock-opname/report">Laporan Stock Opname</a>
+							  </li>
+							</ul>
+						  </div>
+						  
+						  <div class="card-body">
+							<h5 class="card-title">Input Stock Opname</h5>
+							<p class="card-text">Masukkan kondisi buku untuk pengecekan opname</p>
+							<!-- Input stock opname -->
+              <div style="display: block; width: 400px; margin: 0 auto;">
+                  <div id="barcode">
+                    <video id="barcodevideo" autoplay></video>
+                    <canvas id="barcodecanvasg"></canvas>
+                    <canvas id="barcodecanvas"></canvas>
+                  </div>
+                </div>
+                <hr>
+                <div class="form-group"> <!--action post belun-->
+                <center>
+                    <div class="row">
+                        <div class="col-md-12">Scan Barcode</div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12" id="result">
+                          Barcode Read
+                        </div>
+                      </div>
+                      <button id="barcode-button" class="btn btn-primary btn-xs">Periksa Buku</button>
+                      <hr>
+                      <form action="/book/api" method="opname">
+                        <div id="book-result" class="table table-striped">
+                          <script id="template" type="html">
+                            <table class="table table-striped" >  
+                                  <thead>
+                                    <tr>
+                                      <th class="align-self-center">Check</th>
+                                      <th class="align-self-center">ISBN</th>
+                                      <th class="align-self-center">Judul</th>
+                                      <th class="align-self-center">Kategori</th>
+                                      <th class="align-self-center">Jumlah Buku</th>
+                                      <th class="align-self-center">Kondisi Baik</th>
+                                      <th class="align-self-center">Kondisi Buruk</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {{#books}}
+                                    {{#.}}
+                                    <tr>
+                                      <td class="checkbox checkbox-primary align-self-center">
+                                        <input type="checkbox" name="checkedBooks" class="styled styled-primary" id="singleCheckbox2" value={{_id}} checked aria-label="Single checkbox Two">
+                                        <label></label>
+                                      </td>
+                                        <td class="align-self-center">{{isbn}}</td>
+                                        <td class="align-self-center">{{title}}</td>
+                                        <td class="align-self-center">{{category}}</td>
+                                        <td class="align-self-center">
+                                          <select name="stock">
+                                                <option value="0">0</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                              </select>
+                                            </td>
+                                            <td class="align-self-center">
+                                              <select name="goodCondition">
+                                                  <option value="0">0</option>
+                                                  <option value="1">1</option>
+                                                  <option value="2">2</option>
+                                                  <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                              </select>
+                                            </td>
+                                            <td class="align-self-center">
+                                              <select name="badCondition">
+                                                <option value="0">0</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                              <option value="5">5</option>
+                                              <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                              </select>
+                                            </td>
+                                          </tr>
+                                          {{/.}}
+                                      {{/books}}
+                                    </tbody>
+                                    
+                                  </table>
+                                  <button id="submit-button" type="submit" class="btn btn-primary" formmethod="post" formaction="/book/api/opname" >Submit</button>
+                            </script>
+                          </div>
+                          
+                        </form>
+                          <!-- <label for="jumlahBuku">Jumlah Buku</label>
+                  <select class="form-control w-25" id="jumlahBuku">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                  </select>
+
+                  <label for="bukuBaik">Buku Kondisi Baik</label>
+                  <select class="form-control w-25" id="bukuBaik">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                  </select>
+
+                  <label for="bukuBuruk">Buku Kondisi Buruk</label>
+                  <select class="form-control w-25" id="bukuBuruk">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                  </select> -->
+								
+								<!-- <label for="kondisi">Kondisi Buku</label>
+                <input type="text" class="form-control w-75" id="kondisi" placeholder="kondisi bagus"> -->
+                </center>
+
+							
+							<!-- </div>
+							  
+							  <button type="submit" class="btn btn-primary">Submit</button>
+							  
+						  </div> -->
+						</div>  
+                    </div>
+                
+        </div>
+					
+                    <!-- mobile_menu -->
+               
+        <!-- header area end -->
+        <!-- page title area end -->
+
+        <!-- footer area start-->
+        <%- include('../partials/footer') %>
+        <!-- footer area end-->
+    </div>
+    <!-- main wrapper start -->
+    \
+    <!-- jquery latest version -->
+    <script src="/assets/js/vendor/jquery-2.2.4.min.js"></script>
+    <!-- bootstrap 4 js -->
+    <script src="/assets/js/popper.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/owl.carousel.min.js"></script>
+    <script src="/assets/js/metisMenu.min.js"></script>
+    <script src="/assets/js/jquery.slimscroll.min.js"></script>
+    <script src="/assets/js/jquery.slicknav.min.js"></script>
+
+    <!-- others plugins -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
+    <script src="/assets/js/plugins.js"></script>
+    <script src="/assets/js/scripts.js"></script>
+    <script type="text/javascript" src="/js/barcode.js"></script>
+    <script type="text/javascript" src="/js/barcode-setup.js"></script>
+    <script type="text/javascript" src="/js/submit-opname.js"></script>
+
+</body>
+
+</html>
